@@ -3,33 +3,28 @@ import trickyfive.model.Board;
 
 public class Main {
     public static void main(String[] args) {
-        Board b = new Board(12);
+        Board b = new Board(6);
 
-        b.placePlayerInCell(2,6); // 1
-        b.placePlayerInCell(5,9);
-        b.placePlayerInCell(3,6); // 2
-        b.placePlayerInCell(5,7);
-        b.placePlayerInCell(8,4); //
-        b.placePlayerInCell(11,9);
-        b.placePlayerInCell(2,10); //
-        b.placePlayerInCell(3,11);
-        b.placePlayerInCell(4,3); //
-        b.placePlayerInCell(4,7);
-        b.placePlayerInCell(6,9); //
-        b.placePlayerInCell(3,8);
+        b.placePlayerInCell(0,0); //
+        b.placePlayerInCell(0,2);
+        b.placePlayerInCell(0,3); //
+        b.placePlayerInCell(2,1);
+        b.placePlayerInCell(2,2); //
+        b.placePlayerInCell(5,5);
         b.placePlayerInCell(3,2); //
-        b.placePlayerInCell(3,10);
-        b.placePlayerInCell(4,9); //
-        b.placePlayerInCell(4,8);
-        b.placePlayerInCell(1,2); //
-        b.placePlayerInCell(3,3);
-        b.placePlayerInCell(4,6); // 3
-        b.placePlayerInCell(4,5);
-//        System.out.println(b);
-        b.placePlayerInCell(5,6); // 4
-        b.placePlayerInCell(10,9);
-//        System.out.println(b);
-        b.placePlayerInCell(6,6); // 5
+        b.placePlayerInCell(4,2);
+        b.placePlayerInCell(1,5); //
+
+        b.placePlayerInCell(4,4);
+        b.placePlayerInCell(5,0); //
+        b.placePlayerInCell(1,4);
+        b.placePlayerInCell(5,1); //
+        b.placePlayerInCell(4,0);
+        b.placePlayerInCell(5,2); //
+        b.placePlayerInCell(3,1); //
+        b.placePlayerInCell(5,3); //
+        b.placePlayerInCell(1,1); //
+        b.placePlayerInCell(5,4); //
         System.out.println(b);
     }
 }

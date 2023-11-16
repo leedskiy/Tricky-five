@@ -65,7 +65,7 @@ public class Board {
         int row;
         int col;
 
-        if (size > 1 && count == 4) {
+        if (size > 1 && count == 3) {
             randNum = rand.nextInt(size);
             randCellStrSplit = playerCellsStr.get(randNum).split(";");
 
@@ -74,7 +74,7 @@ public class Board {
             this.boardArray.get(row).set(col, Player.EMPTY);
 
             return true;
-        } else if (size > 2 && count == 3) {
+        } else if (size > 2 && count == 4) {
             randNum = rand.nextInt(size);
             randCellStrSplit = playerCellsStr.get(randNum).split(";");
 
@@ -105,21 +105,28 @@ public class Board {
 
             for (int j = 0; j < this.size; ++j) {
                 Player currCellPlayer = this.boardArray.get(i).get(j);
-
                 if (currCellPlayer == this.currPlayer && count == 0) {
                     count = 1;
                 } else if (currCellPlayer == this.currPlayer) {
                     ++count;
-                } else if (currCellPlayer != this.currPlayer || j + 1 == this.size) {
+                } else {
                     if (count == 5) {
                         return this.currPlayer;
                     } else if (count == 3 || count == 4) {
+                        System.out.println(this); // temporary
                         deleteRandomCells(count);
+                        System.out.println("deleteRandomCells Row"); // temporary
                         return Player.EMPTY;
-                    } else if (count != 0) {
-                        count = 0;
                     }
+                    count = 0;
                 }
+            }
+
+            if (count == 5) {
+                return this.currPlayer;
+            } else if (count == 3 || count == 4) {
+                deleteRandomCells(count);
+                return Player.EMPTY;
             }
         }
 
@@ -132,21 +139,27 @@ public class Board {
 
             for (int j = 0; j < this.size; ++j) {
                 Player currCellPlayer = this.boardArray.get(j).get(i);
-
                 if (currCellPlayer == this.currPlayer && count == 0) {
                     count = 1;
                 } else if (currCellPlayer == this.currPlayer) {
                     ++count;
-                } else if (currCellPlayer != this.currPlayer || j + 1 == this.size) {
+                } else {
                     if (count == 5) {
                         return this.currPlayer;
                     } else if (count == 3 || count == 4) {
                         deleteRandomCells(count);
+                        System.out.println("deleteRandomCells Col");
                         return Player.EMPTY;
-                    } else if (count != 0) {
-                        count = 0;
                     }
+                    count = 0;
                 }
+            }
+
+            if (count == 5) {
+                return this.currPlayer;
+            } else if (count == 3 || count == 4) {
+                deleteRandomCells(count);
+                return Player.EMPTY;
             }
         }
 
