@@ -32,14 +32,48 @@ public class Board {
         return boardArray.get(row).get(col);
     }
 
+    private void moveToNextPlayer() {
+        if (this.currPlayer == Player.X) {
+            this.currPlayer = Player.O;
+        } else {
+            this.currPlayer = Player.X;
+        }
+    }
+
+    public boolean placePlayerInCell(int row, int col) {
+        if (this.boardArray.get(row).get(col) == Player.EMPTY) {
+            this.boardArray.get(row).set(col, this.currPlayer);
+            moveToNextPlayer();
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public String toString() {
         String boardArrayElements = "";
 
         for (int i = 0; i < this.size; ++i) {
-            for (int j = 0; j < this.size; ++j) {
-                boardArrayElements += "[" + i + ", " + j + "] = " + this.boardArray.get(i).get(j) + "\n";
+            if (i == 0) {
+                for (int j = 0; j < this.size; ++j) {
+                    boardArrayElements += "     " + j;
+                }
+                boardArrayElements += "\n";
             }
+
+            boardArrayElements += i + "\t";
+
+            for (int j = 0; j < this.size; ++j) {
+                Player boardElem = this.boardArray.get(i).get(j);
+                if (boardElem == Player.EMPTY) {
+                    boardArrayElements += boardElem + " ";
+                } else {
+                    boardArrayElements += boardElem + "     ";
+                }
+            }
+
+            boardArrayElements += "\n";
         }
 
         return boardArrayElements;
