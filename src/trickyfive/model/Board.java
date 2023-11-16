@@ -163,6 +163,45 @@ public class Board {
         return Player.EMPTY;
     }
 
+    private Player checkWinnerInLTRDiagonal() {
+        for (int i = 0, j = this.size - 3; i < this.size - 2 && j >= 0;) {
+            int count = 0;
+
+            for (int k = i, l = j; k < this.size && l < this.size; ++k, ++l) {
+                Player currCellPlayer = this.boardArray.get(k).get(l);
+                if (currCellPlayer == this.currPlayer && count == 0) {
+                    count = 1;
+                } else if (currCellPlayer == this.currPlayer) {
+                    ++count;
+                } else {
+                    if (count == 5) {
+                        return this.currPlayer;
+                    } else if (count == 3 || count == 4) {
+                        deleteRandomCells(count);
+                        return Player.EMPTY;
+                    }
+                    count = 0;
+                }
+            }
+
+            if (count == 5) {
+                return this.currPlayer;
+            } else if (count == 3 || count == 4) {
+                deleteRandomCells(count);
+                return Player.EMPTY;
+            }
+
+            if (j != 0) {
+                --j;
+            } else {
+                ++i;
+                j = 0;
+            }
+        }
+
+        return Player.EMPTY;
+    }
+
     private Player checkWinnerInRTLDiagonal() {
         for (int i = 0, j = 2; i < this.size - 2 && j < this.size;) {
             int count = 0;
@@ -205,6 +244,7 @@ public class Board {
     public Player checkWinner() {
         if (checkWinnerInRow() != Player.EMPTY ||
                 checkWinnerInCol() != Player.EMPTY ||
+                checkWinnerInLTRDiagonal() != Player.EMPTY ||
                 checkWinnerInRTLDiagonal() != Player.EMPTY) {
             System.out.println(this.currPlayer + " is the winner"); // temporary
             return this.currPlayer;
