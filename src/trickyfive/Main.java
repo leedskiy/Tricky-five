@@ -5,9 +5,9 @@ public class Main {
     public static void main(String[] args) {
         Board b = new Board(12);
 
-        b.placePlayerInCell(2,3); // 1
+        b.placePlayerInCell(2,6); // 1
         b.placePlayerInCell(5,9);
-        b.placePlayerInCell(2,4); // 2
+        b.placePlayerInCell(3,6); // 2
         b.placePlayerInCell(5,7);
         b.placePlayerInCell(8,4); //
         b.placePlayerInCell(11,9);
@@ -23,13 +23,13 @@ public class Main {
         b.placePlayerInCell(4,8);
         b.placePlayerInCell(1,2); //
         b.placePlayerInCell(3,3);
-        b.placePlayerInCell(2,5); // 3
+        b.placePlayerInCell(4,6); // 3
         b.placePlayerInCell(4,5);
 //        System.out.println(b);
-        b.placePlayerInCell(2,6); // 4
+        b.placePlayerInCell(5,6); // 4
         b.placePlayerInCell(10,9);
 //        System.out.println(b);
-        b.placePlayerInCell(2,7); // 5
+        b.placePlayerInCell(6,6); // 5
         System.out.println(b);
     }
 }

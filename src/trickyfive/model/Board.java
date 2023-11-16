@@ -126,8 +126,36 @@ public class Board {
         return Player.EMPTY;
     }
 
+    private Player checkWinnerInCol() {
+        for (int i = 0; i < this.size; ++i) {
+            int count = 0;
+
+            for (int j = 0; j < this.size; ++j) {
+                Player currCellPlayer = this.boardArray.get(j).get(i);
+
+                if (currCellPlayer == this.currPlayer && count == 0) {
+                    count = 1;
+                } else if (currCellPlayer == this.currPlayer) {
+                    ++count;
+                } else if (currCellPlayer != this.currPlayer || j + 1 == this.size) {
+                    if (count == 5) {
+                        return this.currPlayer;
+                    } else if (count == 3 || count == 4) {
+                        deleteRandomCells(count);
+                        return Player.EMPTY;
+                    } else if (count != 0) {
+                        count = 0;
+                    }
+                }
+            }
+        }
+
+        return Player.EMPTY;
+    }
+
     public Player checkWinner() {
-        if (checkWinnerInRow() != Player.EMPTY) {
+        if (checkWinnerInRow() != Player.EMPTY ||
+                checkWinnerInCol() != Player.EMPTY) {
             System.out.println(this.currPlayer + " is the winner"); // temporary
             return this.currPlayer;
         }
