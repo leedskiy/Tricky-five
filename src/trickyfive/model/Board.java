@@ -253,12 +253,23 @@ public class Board {
         return Player.EMPTY;
     }
 
+    public boolean checkGameEnd() {
+        for (int i = 0; i < this.size; ++i) {
+            for (int j = 0; j < this.size; ++j) {
+                if (this.boardArray.get(i).get(j) != Player.EMPTY) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public boolean placePlayerInCell(int row, int col) {
         if (this.boardArray.get(row).get(col) == Player.EMPTY) {
             this.boardArray.get(row).set(col, this.currPlayer);
             checkWinner(); // temporary
             moveToNextPlayer();
-            // System.out.println(this); // temporary
             return true;
         }
 
