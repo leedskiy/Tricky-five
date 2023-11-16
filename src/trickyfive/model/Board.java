@@ -1,6 +1,8 @@
 package trickyfive.model;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.lang.Integer;
 
 public class Board {
     private int size;
@@ -25,11 +27,11 @@ public class Board {
     }
 
     public Player getCurrPlayer() {
-        return currPlayer;
+        return this.currPlayer;
     }
 
     public Player getCellPlayer(int row, int col) {
-        return boardArray.get(row).get(col);
+        return this.boardArray.get(row).get(col);
     }
 
     private void moveToNextPlayer() {
@@ -40,10 +42,105 @@ public class Board {
         }
     }
 
+    private ArrayList<String> getAllPlayerCellsStr() {
+        ArrayList<String> arrList = new ArrayList<String>();
+
+        for (int i = 0; i < this.size; i++) {
+            for (int j = 0; j < this.size; j++) {
+                if (boardArray.get(i).get(j) == this.currPlayer) {
+                    arrList.add(i + ";" + j);
+                }
+            }
+        }
+
+        return arrList;
+    }
+
+    private boolean deleteRandomCells(int count) {
+        ArrayList<String> playerCellsStr = getAllPlayerCellsStr();
+        int size = playerCellsStr.size();
+        Random rand = new Random();
+        int randNum;
+        String[] randCellStrSplit;
+        int row;
+        int col;
+
+        if (size > 1 && count == 4) {
+            randNum = rand.nextInt(size);
+            randCellStrSplit = playerCellsStr.get(randNum).split(";");
+
+            row = Integer.parseInt(randCellStrSplit[0]);
+            col = Integer.parseInt(randCellStrSplit[1]);
+            this.boardArray.get(row).set(col, Player.EMPTY);
+
+            return true;
+        } else if (size > 2 && count == 3) {
+            randNum = rand.nextInt(size);
+            randCellStrSplit = playerCellsStr.get(randNum).split(";");
+
+            row = Integer.parseInt(randCellStrSplit[0]);
+            col = Integer.parseInt(randCellStrSplit[1]);
+            this.boardArray.get(row).set(col, Player.EMPTY);
+
+            playerCellsStr.remove(randNum);
+            size = playerCellsStr.size();
+            randNum = rand.nextInt(size);
+            randCellStrSplit = playerCellsStr.get(randNum).split(";");
+
+            row = Integer.parseInt(randCellStrSplit[0]);
+            col = Integer.parseInt(randCellStrSplit[1]);
+
+            this.boardArray.get(row).set(col, Player.EMPTY);
+
+            return true;
+
+        }
+
+        return false;
+    }
+
+    private Player checkWinnerInRow() {
+        for (int i = 0; i < this.size; ++i) {
+            int count = 0;
+
+            for (int j = 0; j < this.size; ++j) {
+                Player currCellPlayer = this.boardArray.get(i).get(j);
+
+                if (currCellPlayer == this.currPlayer && count == 0) {
+                    count = 1;
+                } else if (currCellPlayer == this.currPlayer) {
+                    ++count;
+                } else if (currCellPlayer != this.currPlayer || j + 1 == this.size) {
+                    if (count == 5) {
+                        return this.currPlayer;
+                    } else if (count == 3 || count == 4) {
+                        deleteRandomCells(count);
+                        return Player.EMPTY;
+                    } else if (count != 0) {
+                        count = 0;
+                    }
+                }
+            }
+        }
+
+        return Player.EMPTY;
+    }
+
+    public Player checkWinner() {
+        if (checkWinnerInRow() != Player.EMPTY) {
+            System.out.println(this.currPlayer + " is the winner"); // temporary
+            return this.currPlayer;
+        }
+
+        return Player.EMPTY;
+    }
+
     public boolean placePlayerInCell(int row, int col) {
         if (this.boardArray.get(row).get(col) == Player.EMPTY) {
             this.boardArray.get(row).set(col, this.currPlayer);
+            checkWinner(); // temporary
             moveToNextPlayer();
+            // System.out.println(this); // temporary
             return true;
         }
 
@@ -69,7 +166,7 @@ public class Board {
                 if (boardElem == Player.EMPTY) {
                     boardArrayElements += boardElem + " ";
                 } else {
-                    boardArrayElements += boardElem + "     ";
+                    boardArrayElements += "  " + boardElem + "   ";
                 }
             }
 
