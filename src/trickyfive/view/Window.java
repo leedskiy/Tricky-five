@@ -20,6 +20,9 @@ public class Window extends JFrame {
                 doOnExit();
             }
         });
+
+        URL url = Window.class.getResource("appicon.png");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(url));
     }
 
     protected void doOnExit() {
