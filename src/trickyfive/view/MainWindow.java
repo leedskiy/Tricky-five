@@ -21,13 +21,13 @@ public class MainWindow extends Window {
         label.setBorder(new EmptyBorder(20, 0, 20, 0));
         label.setText("Choose the size of the game board");
 
-        JButton button6x6 = createButton("6 x 6", 3);
+        JButton button6x6 = createButton("6 x 6", 6);
         button6x6.setBorder(new EmptyBorder(13, 13, 13, 13));
 
-        JButton button10x10 = createButton("10 x 10", 4);
+        JButton button10x10 = createButton("10 x 10", 10);
         button10x10.setBorder(new EmptyBorder(13, 13, 13, 13));
 
-        JButton button14x14 = createButton("14 x 14", 5);
+        JButton button14x14 = createButton("14 x 14", 14);
         button14x14.setBorder(new EmptyBorder(13, 13, 13, 13));
 
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -41,10 +41,10 @@ public class MainWindow extends Window {
 
     private ActionListener getActionListener(int size) {
         return new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Window window = new GameWindow(MainWindow.this, size);
+                windows.add(window);
             }
         };
     }

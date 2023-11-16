@@ -1,7 +1,10 @@
 package trickyfive.view;
 
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
+
 import javax.swing.JFrame;
 
 public class Window extends JFrame {

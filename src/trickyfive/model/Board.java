@@ -26,6 +26,10 @@ public class Board {
         }
     }
 
+    public int getSize() {
+        return this.size;
+    }
+
     public Player getCurrPlayer() {
         return this.currPlayer;
     }
@@ -34,7 +38,7 @@ public class Board {
         return this.boardArray.get(row).get(col);
     }
 
-    private void moveToNextPlayer() {
+    public void moveToNextPlayer() {
         if (this.currPlayer == Player.X) {
             this.currPlayer = Player.O;
         } else {
@@ -93,7 +97,6 @@ public class Board {
             this.boardArray.get(row).set(col, Player.EMPTY);
 
             return true;
-
         }
 
         return false;
@@ -110,7 +113,7 @@ public class Board {
                 } else if (currCellPlayer == this.currPlayer) {
                     ++count;
                 } else {
-                    if (count == 5) {
+                    if (count >= 5) {
                         return this.currPlayer;
                     } else if (count == 3 || count == 4) {
                         deleteRandomCells(count);
@@ -120,7 +123,7 @@ public class Board {
                 }
             }
 
-            if (count == 5) {
+            if (count >= 5) {
                 return this.currPlayer;
             } else if (count == 3 || count == 4) {
                 deleteRandomCells(count);
@@ -142,7 +145,7 @@ public class Board {
                 } else if (currCellPlayer == this.currPlayer) {
                     ++count;
                 } else {
-                    if (count == 5) {
+                    if (count >= 5) {
                         return this.currPlayer;
                     } else if (count == 3 || count == 4) {
                         deleteRandomCells(count);
@@ -152,7 +155,7 @@ public class Board {
                 }
             }
 
-            if (count == 5) {
+            if (count >= 5) {
                 return this.currPlayer;
             } else if (count == 3 || count == 4) {
                 deleteRandomCells(count);
@@ -174,7 +177,7 @@ public class Board {
                 } else if (currCellPlayer == this.currPlayer) {
                     ++count;
                 } else {
-                    if (count == 5) {
+                    if (count >= 5) {
                         return this.currPlayer;
                     } else if (count == 3 || count == 4) {
                         deleteRandomCells(count);
@@ -184,7 +187,7 @@ public class Board {
                 }
             }
 
-            if (count == 5) {
+            if (count >= 5) {
                 return this.currPlayer;
             } else if (count == 3 || count == 4) {
                 deleteRandomCells(count);
@@ -213,7 +216,7 @@ public class Board {
                 } else if (currCellPlayer == this.currPlayer) {
                     ++count;
                 } else {
-                    if (count == 5) {
+                    if (count >= 5) {
                         return this.currPlayer;
                     } else if (count == 3 || count == 4) {
                         deleteRandomCells(count);
@@ -223,7 +226,7 @@ public class Board {
                 }
             }
 
-            if (count == 5) {
+            if (count >= 5) {
                 return this.currPlayer;
             } else if (count == 3 || count == 4) {
                 deleteRandomCells(count);
@@ -246,7 +249,6 @@ public class Board {
                 checkWinnerInCol() != Player.EMPTY ||
                 checkWinnerInLTRDiagonal() != Player.EMPTY ||
                 checkWinnerInRTLDiagonal() != Player.EMPTY) {
-            System.out.println(this.currPlayer + " is the winner"); // temporary
             return this.currPlayer;
         }
 
@@ -256,7 +258,7 @@ public class Board {
     public boolean checkGameEnd() {
         for (int i = 0; i < this.size; ++i) {
             for (int j = 0; j < this.size; ++j) {
-                if (this.boardArray.get(i).get(j) != Player.EMPTY) {
+                if (this.boardArray.get(i).get(j) == Player.EMPTY) {
                     return false;
                 }
             }
@@ -268,8 +270,6 @@ public class Board {
     public boolean placePlayerInCell(int row, int col) {
         if (this.boardArray.get(row).get(col) == Player.EMPTY) {
             this.boardArray.get(row).set(col, this.currPlayer);
-            checkWinner(); // temporary
-            moveToNextPlayer();
             return true;
         }
 
