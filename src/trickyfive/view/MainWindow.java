@@ -55,7 +55,7 @@ public class MainWindow extends Window {
         return button;
     }
 
-    public List<Window> getAllWindows() {
+    public ArrayList<Window> getAllWindows() {
         return windows;
     }
 }
