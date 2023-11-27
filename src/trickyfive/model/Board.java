@@ -8,11 +8,33 @@ public class Board {
     private int size;
     private Player currPlayer;
     private ArrayList<ArrayList<Player>> boardArray;
+    private ArrayList<Integer> currP34Count;
+    private ArrayList<Integer> prev2Players34Count;
 
     public Board(int size) {
         this.size = size;
         this.currPlayer = Player.X;
+
+        createCountingArrays();
         createBoardArray();
+    }
+
+    private void createCountingArrays() {
+        this.currP34Count = new ArrayList<Integer>();
+        // 0 - count of 3 adj signs for curr sign
+        // 1 - count of 4 adj signs for curr sign
+        this.prev2Players34Count = new ArrayList<Integer>();
+        // 0 - count of 3 adj signs for X
+        // 1 - count of 4 adj signs for X
+        // 2 - count of 3 adj signs for O
+        // 3 - count of 4 adj signs for O
+
+        for (int i = 0; i < 2; i++) {
+            this.currP34Count.add(0);
+        }
+        for (int i = 0; i < 4; i++) {
+            this.prev2Players34Count.add(0);
+        }
     }
 
     private void createBoardArray() {
@@ -46,6 +68,11 @@ public class Board {
         }
     }
 
+    private void resetCurrP34Count() {
+        currP34Count.set(0, 0);
+        currP34Count.set(1, 0);
+    }
+
     private ArrayList<String> getAllPlayerCellsStr() {
         ArrayList<String> arrList = new ArrayList<String>();
 
@@ -60,7 +87,7 @@ public class Board {
         return arrList;
     }
 
-    private boolean deleteRandomCells(int count) {
+    private boolean deleteRandomCells() {
         ArrayList<String> playerCellsStr = getAllPlayerCellsStr();
         int size = playerCellsStr.size();
         Random rand = new Random();
@@ -69,7 +96,21 @@ public class Board {
         int row;
         int col;
 
-        if (size > 1 && count == 3) {
+        int currPlayerIndex1 = this.currPlayer == Player.X ? 0 : 2;
+        int currPlayerIndex2 = this.currPlayer == Player.X ? 1 : 3;
+
+        for (int i = 0; i < 2; i++) {
+            System.out.println(i + " (" + this.currP34Count.get(i) + ")");
+        }
+
+        for (int i = 0; i < 4; i++) {
+            System.out.println(i + " (" + this.prev2Players34Count.get(i) + ")");
+        }
+
+        System.out.println("\n");
+        if (size > 1
+                && this.currP34Count.get(0) != this.prev2Players34Count
+                        .get(currPlayerIndex1)) {
             randNum = rand.nextInt(size);
             randCellStrSplit = playerCellsStr.get(randNum).split(";");
 
@@ -77,8 +118,20 @@ public class Board {
             col = Integer.parseInt(randCellStrSplit[1]);
             this.boardArray.get(row).set(col, Player.EMPTY);
 
+            resetCurrP34Count();
+
+            checkWinnerInRow();
+            checkWinnerInCol();
+            checkWinnerInLTRDiagonal();
+            checkWinnerInRTLDiagonal();
+
+            this.prev2Players34Count.set(currPlayerIndex1, this.currP34Count.get(0));
+            this.prev2Players34Count.set(currPlayerIndex2, this.currP34Count.get(1));
+
             return true;
-        } else if (size > 2 && count == 4) {
+        } else if (size > 2
+                && this.currP34Count.get(1) != this.prev2Players34Count
+                        .get(currPlayerIndex2)) {
             randNum = rand.nextInt(size);
             randCellStrSplit = playerCellsStr.get(randNum).split(";");
 
@@ -93,13 +146,30 @@ public class Board {
 
             row = Integer.parseInt(randCellStrSplit[0]);
             col = Integer.parseInt(randCellStrSplit[1]);
-
             this.boardArray.get(row).set(col, Player.EMPTY);
+
+            resetCurrP34Count();
+
+            checkWinnerInRow();
+            checkWinnerInCol();
+            checkWinnerInLTRDiagonal();
+            checkWinnerInRTLDiagonal();
+
+            this.prev2Players34Count.set(currPlayerIndex1, this.currP34Count.get(0));
+            this.prev2Players34Count.set(currPlayerIndex2, this.currP34Count.get(1));
 
             return true;
         }
 
         return false;
+    }
+
+    private void incrCurrP34Count(int adjSignsCount) {
+        if (adjSignsCount == 3) {
+            this.currP34Count.set(0, currP34Count.get(0) + 1);
+        } else if (adjSignsCount == 4) {
+            this.currP34Count.set(1, currP34Count.get(1) + 1);
+        }
     }
 
     private Player checkWinnerInRow() {
@@ -115,9 +185,8 @@ public class Board {
                 } else {
                     if (count >= 5) {
                         return this.currPlayer;
-                    } else if (count == 3 || count == 4) {
-                        deleteRandomCells(count);
-                        return Player.EMPTY;
+                    } else if (count == 4 || count == 3) {
+                        incrCurrP34Count(count);
                     }
                     count = 0;
                 }
@@ -125,9 +194,8 @@ public class Board {
 
             if (count >= 5) {
                 return this.currPlayer;
-            } else if (count == 3 || count == 4) {
-                deleteRandomCells(count);
-                return Player.EMPTY;
+            } else if (count == 4 || count == 3) {
+                incrCurrP34Count(count);
             }
         }
 
@@ -147,9 +215,8 @@ public class Board {
                 } else {
                     if (count >= 5) {
                         return this.currPlayer;
-                    } else if (count == 3 || count == 4) {
-                        deleteRandomCells(count);
-                        return Player.EMPTY;
+                    } else if (count == 4 || count == 3) {
+                        incrCurrP34Count(count);
                     }
                     count = 0;
                 }
@@ -157,9 +224,8 @@ public class Board {
 
             if (count >= 5) {
                 return this.currPlayer;
-            } else if (count == 3 || count == 4) {
-                deleteRandomCells(count);
-                return Player.EMPTY;
+            } else if (count == 4 || count == 3) {
+                incrCurrP34Count(count);
             }
         }
 
@@ -179,9 +245,8 @@ public class Board {
                 } else {
                     if (count >= 5) {
                         return this.currPlayer;
-                    } else if (count == 3 || count == 4) {
-                        deleteRandomCells(count);
-                        return Player.EMPTY;
+                    } else if (count == 4 || count == 3) {
+                        incrCurrP34Count(count);
                     }
                     count = 0;
                 }
@@ -189,9 +254,8 @@ public class Board {
 
             if (count >= 5) {
                 return this.currPlayer;
-            } else if (count == 3 || count == 4) {
-                deleteRandomCells(count);
-                return Player.EMPTY;
+            } else if (count == 4 || count == 3) {
+                incrCurrP34Count(count);
             }
 
             if (j != 0) {
@@ -218,9 +282,8 @@ public class Board {
                 } else {
                     if (count >= 5) {
                         return this.currPlayer;
-                    } else if (count == 3 || count == 4) {
-                        deleteRandomCells(count);
-                        return Player.EMPTY;
+                    } else if (count == 4 || count == 3) {
+                        incrCurrP34Count(count);
                     }
                     count = 0;
                 }
@@ -228,9 +291,8 @@ public class Board {
 
             if (count >= 5) {
                 return this.currPlayer;
-            } else if (count == 3 || count == 4) {
-                deleteRandomCells(count);
-                return Player.EMPTY;
+            } else if (count == 4 || count == 3) {
+                incrCurrP34Count(count);
             }
 
             if (j != this.size - 1) {
@@ -245,6 +307,8 @@ public class Board {
     }
 
     public Player checkWinner() {
+        resetCurrP34Count();
+
         if (checkWinnerInRow() != Player.EMPTY ||
                 checkWinnerInCol() != Player.EMPTY ||
                 checkWinnerInLTRDiagonal() != Player.EMPTY ||
@@ -252,6 +316,7 @@ public class Board {
             return this.currPlayer;
         }
 
+        deleteRandomCells();
         return Player.EMPTY;
     }
 
