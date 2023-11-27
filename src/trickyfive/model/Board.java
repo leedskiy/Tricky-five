@@ -99,15 +99,6 @@ public class Board {
         int currPlayerIndex1 = this.currPlayer == Player.X ? 0 : 2;
         int currPlayerIndex2 = this.currPlayer == Player.X ? 1 : 3;
 
-        for (int i = 0; i < 2; i++) {
-            System.out.println(i + " (" + this.currP34Count.get(i) + ")");
-        }
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(i + " (" + this.prev2Players34Count.get(i) + ")");
-        }
-
-        System.out.println("\n");
         if (size > 1
                 && this.currP34Count.get(0) != this.prev2Players34Count
                         .get(currPlayerIndex1)) {
